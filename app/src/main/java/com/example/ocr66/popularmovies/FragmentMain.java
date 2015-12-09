@@ -44,6 +44,7 @@ public class FragmentMain extends Fragment{
     private String[] posters;
     public ImageView posterImage;
     private ArrayAdapter<ImageView> adapter;
+    private GridView gridView;
 
     public FragmentMain(){
 
@@ -82,8 +83,8 @@ public class FragmentMain extends Fragment{
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         //return super.onCreateView(inflater, container, savedInstanceState);
 
-        GridView gridView = (GridView)rootView.findViewById(R.id.grid_view_movies);
-        gridView.setAdapter(adapter);
+        gridView = (GridView)rootView.findViewById(R.id.grid_view_movies);
+        //gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -120,12 +121,13 @@ public class FragmentMain extends Fragment{
         Log.v(LOG_TAG, "Fetching posters...");
         //fetchPoster.execute(posters);
         if(posters != null) {
-            for (int i = 0; i < names.length; i++) {
+            /*for (int i = 0; i < posters.length; i++) {
                 Log.v(LOG_TAG, "Build result: " + BASE_IMAGE_URL + posters[i].toString());
                 Picasso.with(getActivity()).load(BASE_IMAGE_URL + posters[i].toString()).into(temp);
                 adapter.add(temp);
                 adapter.notifyDataSetChanged();
-            }
+            }*/
+            gridView.setAdapter(new CustomAdapter(getActivity(), posters));
             Log.v(LOG_TAG, "Done");
         }
     }
