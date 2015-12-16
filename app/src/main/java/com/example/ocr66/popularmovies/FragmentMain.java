@@ -1,5 +1,6 @@
 package com.example.ocr66.popularmovies;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -42,6 +43,8 @@ public class FragmentMain extends Fragment{
     public View rootView;
     private String[] names;
     private String[] posters;
+    private String[] synopsis;
+    private String[] rating;
     public ImageView posterImage;
     private ArrayAdapter<ImageView> adapter;
     private GridView gridView;
@@ -89,6 +92,12 @@ public class FragmentMain extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(), names[position], Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MovieInfo.class);
+                intent.putExtra("Name", names[position]);
+                intent.putExtra("Poster", posters[position]);
+                intent.putExtra("Synopsis", synopsis[position]);
+                intent.putExtra("Rating", rating[position]);
+                startActivity(intent);
             }
         });
         return rootView;
@@ -143,6 +152,8 @@ public class FragmentMain extends Fragment{
         private String RESULTS = "results";
         private String MOVIE_NAME = "title";
         private String MOVIE_IMAGE = "poster_path";
+        private String MOVIE_SYNOPSIS = "overview";
+        private String MOVIE_RATING = "vote_average";
         private Resources res;
 
         private String[] getMovieInfoFromJson(String movieInfoJsonStr) throws JSONException {
@@ -154,12 +165,16 @@ public class FragmentMain extends Fragment{
             for(int i = 0; i < moviesArray.length(); i++){
                 String name;
                 String posterPath;
+                String synopsis;
+                double rating;
 
                 JSONObject movie = moviesArray.getJSONObject(i);
                 name = movie.getString(MOVIE_NAME);
                 posterPath = movie.getString(MOVIE_IMAGE);
+                synopsis = movie.getString(MOVIE_SYNOPSIS);
+                rating = movie.getDouble(MOVIE_RATING);
 
-                resultsStr[i] = name + "--" + posterPath;
+                resultsStr[i] = name + "--" + posterPath + "--" + synopsis + "--" + rating;
                 //Si solo quiero la imagen sería
                 //resultsStr[i] = posterPath;
             }
@@ -230,6 +245,8 @@ public class FragmentMain extends Fragment{
                         reader.close();
                     }catch (final IOException e){
                         return null;
+                    }catch (final Exception e){
+                        return null;
                     }
                 }
             }
@@ -250,13 +267,17 @@ public class FragmentMain extends Fragment{
                 String temp[];
                 names = new String[strings.length];
                 posters = new String[strings.length];
+                synopsis = new String[strings.length];
+                rating = new String[strings.length];
                 //adapter.clear();
 
                 for(int i = 0; i < strings.length; i++){
                     temp = strings[i].split("--");
                     names[i] = temp[0];
                     posters[i] = temp[1];
-                    temp[0] = temp[1] = null;
+                    synopsis[i] = temp[2];
+                    rating[i] = temp[3];
+                    temp[0] = temp[1] = temp[2] = temp[3] = null;
                     //adapter.add(names[i]);
                 }
             }

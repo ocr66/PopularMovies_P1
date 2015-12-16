@@ -6,4 +6,4 @@
         android:padding="10sp"
         android:id="@+id/poster"
         android:layout_weight="0.82"
-        xmlns:android="http://schemas.android.com/apk/res/android"/>
+        xmlns:android="http://schemas.android.com/apk/res/android" />

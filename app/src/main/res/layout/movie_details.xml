@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="180sp"
+                android:layout_height="220sp"
+                android:id="@+id/movie_poster"
+                android:padding="10sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="39dp"
+                android:text="Movie Title"
+                android:textSize="30sp"
+                android:id="@+id/movie_title"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/movie_poster"
+                android:layout_toEndOf="@+id/movie_poster"
+                android:paddingLeft="10dp"/>
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_centerVertical="true"
+                android:layout_alignLeft="@+id/movie_title"
+                android:layout_alignStart="@+id/movie_title"
+                android:id="@+id/movie_rating"
+                android:numStars="5"
+                android:layout_below="@+id/movie_title"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@+id/movie_poster"
+                android:id="@+id/space"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Synopsis"
+                android:textSize="20dp"
+                android:layout_below="@+id/space"
+                android:id="@+id/movie_synopsis"/>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
