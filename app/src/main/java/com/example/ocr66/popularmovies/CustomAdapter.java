@@ -63,16 +63,8 @@ public class CustomAdapter extends BaseAdapter {
             viewHolder = (CustomAdapterViewHolder)v.getTag();
         }
 
-        /*GridView gridView = (GridView)v.findViewById(R.id.grid_view_movies);
-        //gridView.setAdapter(adapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, position, Toast.LENGTH_SHORT).show();
-            }
-        });*/
         Picasso.with(context).load(BASE_IMAGE_URL + getItem(position)).into(viewHolder.imageView);
-        Log.v(LOG_TAG, "Build result: " + BASE_IMAGE_URL + getItem(position));
+        //Log.v(LOG_TAG, "Build result: " + BASE_IMAGE_URL + getItem(position));
         return v;
     }
 

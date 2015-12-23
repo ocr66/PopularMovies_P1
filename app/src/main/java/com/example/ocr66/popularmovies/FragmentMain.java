@@ -42,14 +42,13 @@ import java.util.ArrayList;
  */
 public class FragmentMain extends Fragment{
 
-    private static final String LOG_TAG = FetchMovieInfo.class.getSimpleName();
+    //private static final String LOG_TAG = FetchMovieInfo.class.getSimpleName();
     public View rootView;
     private String[] names;
     private String[] posters;
     private String[] synopsis;
     private String[] rating;
     private String[] releaseDate;
-    public ImageView posterImage;
     private ArrayAdapter<ImageView> adapter;
     private GridView gridView;
     private String movieToGet = "popular";
@@ -117,14 +116,12 @@ public class FragmentMain extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //posterImage = (ImageView)rootView.findViewById(R.id.poster);
         adapter = new ArrayAdapter<ImageView>(getActivity(),
                 R.layout.movie_info,
                 R.id.poster,
                 new ArrayList<ImageView>());
 
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        //return super.onCreateView(inflater, container, savedInstanceState);
         list = (TextView)rootView.findViewById(R.id.movie_list);
 
         previous = (Button)rootView.findViewById(R.id.previous_movies);
@@ -163,11 +160,10 @@ public class FragmentMain extends Fragment{
         });
 
         gridView = (GridView)rootView.findViewById(R.id.grid_view_movies);
-        //gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), names[position], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), names[position], Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), MovieInfo.class);
                 intent.putExtra("Name", names[position]);
                 intent.putExtra("Poster", posters[position]);
@@ -183,14 +179,9 @@ public class FragmentMain extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        Log.v(LOG_TAG, "Fetching info");
+        //Log.v(LOG_TAG, "Fetching info");
         updateMovies();
-        Log.v(LOG_TAG, "Names " + names);
-        /*if(names != null){
-            Log.v(LOG_TAG, "Fetching posters...");
-            fetchPosters();
-            Log.v(LOG_TAG, "Fetching posters done");
-        }*/
+        //Log.v(LOG_TAG, "Names " + names);
     }
 
     private void updateMovies(){
@@ -200,26 +191,16 @@ public class FragmentMain extends Fragment{
             list.setText("Top Rated");
         }
         FetchMovieInfo fetchMovieInfo = new FetchMovieInfo();
-        Log.v(LOG_TAG, "Fetching movies info...");
+        //Log.v(LOG_TAG, "Fetching movies info...");
         fetchMovieInfo.execute();
-        Log.v(LOG_TAG, "Done");
+        //Log.v(LOG_TAG, "Done");
     }
 
     private void fetchPosters(){
-        String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500";
-        ImageView temp = new ImageView(getActivity());
-        //FetchPoster fetchPoster = new FetchPoster();
-        Log.v(LOG_TAG, "Fetching posters...");
-        //fetchPoster.execute(posters);
+        //Log.v(LOG_TAG, "Fetching posters...");
         if(posters != null) {
-            /*for (int i = 0; i < posters.length; i++) {
-                Log.v(LOG_TAG, "Build result: " + BASE_IMAGE_URL + posters[i].toString());
-                Picasso.with(getActivity()).load(BASE_IMAGE_URL + posters[i].toString()).into(temp);
-                adapter.add(temp);
-                adapter.notifyDataSetChanged();
-            }*/
             gridView.setAdapter(new CustomAdapter(getActivity(), posters));
-            Log.v(LOG_TAG, "Done");
+            //Log.v(LOG_TAG, "Done");
         }
     }
 
@@ -239,7 +220,6 @@ public class FragmentMain extends Fragment{
         private String MOVIE_RATING = "vote_average";
         private String MOVIE_RELEASE_DATE = "release_date";
         private String PAGE = "page";
-        private Resources res;
         private String pageNumber = "";
 
         private String[] getMovieInfoFromJson(String movieInfoJsonStr) throws JSONException {
@@ -268,16 +248,16 @@ public class FragmentMain extends Fragment{
                 //resultsStr[i] = posterPath;
             }
 
-            for (String s : resultsStr){
+            /*for (String s : resultsStr){
                 Log.v(LOG_TAG, "Movie entry " + s);
-            }
+            }*/
             return resultsStr;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.v(LOG_TAG, "On Pre-excecute");
+            //Log.v(LOG_TAG, "On Pre-excecute");
             if(movieToGet == "popular"){
                 LIST = POPULAR_MOVIES;
             }else{
@@ -289,7 +269,7 @@ public class FragmentMain extends Fragment{
 
         @Override
         protected String[] doInBackground(Void... params) {
-            Log.v(LOG_TAG, "Do in background");
+            //Log.v(LOG_TAG, "Do in background");
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -305,7 +285,7 @@ public class FragmentMain extends Fragment{
                 .build();
 
                 URL url = new URL(buildUri.toString());
-                Log.v(LOG_TAG, "Build result: " + buildUri.toString());
+                //Log.v(LOG_TAG, "Build result: " + buildUri.toString());
 
                 urlConnection = (HttpURLConnection)url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -330,10 +310,10 @@ public class FragmentMain extends Fragment{
                     return null;
                 }
                 moviesJsonStr = stringBuffer.toString();
-                Log.v(LOG_TAG, "Movie string: " + moviesJsonStr);
+                //Log.v(LOG_TAG, "Movie string: " + moviesJsonStr);
 
             }catch (Exception e){
-                Log.e(LOG_TAG, "Error " + e);
+                //Log.e(LOG_TAG, "Error " + e);
                 moviesJsonStr = null;
                 return null;
             } finally {
@@ -351,7 +331,7 @@ public class FragmentMain extends Fragment{
             try {
                  return getMovieInfoFromJson(moviesJsonStr);
             }catch (JSONException e){
-                Log.e(LOG_TAG, e.getMessage());
+                //Log.e(LOG_TAG, e.getMessage());
                 e.printStackTrace();
             }
             return null;
@@ -359,7 +339,7 @@ public class FragmentMain extends Fragment{
 
         @Override
         protected void onPostExecute(String[] strings) {
-            Log.v(LOG_TAG, "On post excecute");
+            //Log.v(LOG_TAG, "On post excecute");
             if(strings != null){
                 String temp[];
                 names = new String[strings.length];
@@ -367,7 +347,6 @@ public class FragmentMain extends Fragment{
                 synopsis = new String[strings.length];
                 rating = new String[strings.length];
                 releaseDate = new String[strings.length];
-                //adapter.clear();
 
                 for(int i = 0; i < strings.length; i++){
                     temp = strings[i].split("--");
@@ -377,30 +356,12 @@ public class FragmentMain extends Fragment{
                     rating[i] = temp[3];
                     releaseDate[i] = temp[4];
                     temp[0] = temp[1] = temp[2] = temp[3] = temp[4] = null;
-                    //adapter.add(names[i]);
                 }
             }
 
-            Log.v(LOG_TAG, "Fetching posters...");
+            //Log.v(LOG_TAG, "Fetching posters...");
             fetchPosters();
-            Log.v(LOG_TAG, "Fetching posters done");
-        }
-    }
-
-    public class FetchPoster extends AsyncTask<String[], Void, Void>{
-
-        private String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500";
-        ImageView temp;
-        @Override
-        protected Void doInBackground(String[]... params) {
-            Log.v(LOG_TAG, "Do in background");
-            for(int i = 0; i < params.length; i++) {
-                Log.v(LOG_TAG, "Build result: " + BASE_IMAGE_URL + params[i].toString());
-                Picasso.with(getActivity()).load(BASE_IMAGE_URL + params[i].toString()).into(temp);
-                adapter.add(temp);
-                adapter.notifyDataSetChanged();
-            }
-            return null;
+            //Log.v(LOG_TAG, "Fetching posters done");
         }
     }
 }
