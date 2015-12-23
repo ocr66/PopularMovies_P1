@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,6 +54,9 @@ public class FragmentMain extends Fragment{
     private GridView gridView;
     private String movieToGet = "popular";
     private TextView list;
+    private Button previous;
+    private Button next;
+    private int page = 1;
 
     public FragmentMain(){
 
@@ -90,11 +95,19 @@ public class FragmentMain extends Fragment{
         }else if(id == R.id.action_popular){
             if(movieToGet == "topRated") {
                 movieToGet = "popular";
+                page = 1;
+                previous.setText(R.string.previous_page);
+                previous.setEnabled(false);
+                next.setText((page+1) + "");
                 updateMovies();
             }
         }else if(id == R.id.action_top_rated) {
             if (movieToGet == "popular"){
                 movieToGet = "topRated";
+                page = 1;
+                previous.setText(R.string.previous_page);
+                previous.setEnabled(false);
+                next.setText((page+1) + "");
                 updateMovies();
             }
         }
@@ -113,6 +126,41 @@ public class FragmentMain extends Fragment{
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         //return super.onCreateView(inflater, container, savedInstanceState);
         list = (TextView)rootView.findViewById(R.id.movie_list);
+
+        previous = (Button)rootView.findViewById(R.id.previous_movies);
+        next = (Button)rootView.findViewById(R.id.next_movies);
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                page--;
+                if (page >= 2) {
+                    previous.setText((page - 1) + "");
+                    next.setText((page + 1) + "");
+                } else if (page == 1) {
+                    previous.setText(R.string.previous_page);
+                    previous.setEnabled(false);
+                    next.setText((page + 1) + "");
+                }
+                updateMovies();
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                page++;
+                updateMovies();
+                if (page == 2) {
+                    previous.setText((page - 1) + "");
+                    previous.setEnabled(true);
+                    next.setText((page + 1) + "");
+                } else if (page > 2) {
+                    previous.setText((page - 1) + "");
+                    next.setText((page + 1) + "");
+                }
+            }
+        });
 
         gridView = (GridView)rootView.findViewById(R.id.grid_view_movies);
         //gridView.setAdapter(adapter);
@@ -190,7 +238,9 @@ public class FragmentMain extends Fragment{
         private String MOVIE_SYNOPSIS = "overview";
         private String MOVIE_RATING = "vote_average";
         private String MOVIE_RELEASE_DATE = "release_date";
+        private String PAGE = "page";
         private Resources res;
+        private String pageNumber = "";
 
         private String[] getMovieInfoFromJson(String movieInfoJsonStr) throws JSONException {
 
@@ -233,6 +283,8 @@ public class FragmentMain extends Fragment{
             }else{
                 LIST = TOP_RATED;
             }
+
+            pageNumber = page + "";
         }
 
         @Override
@@ -249,6 +301,7 @@ public class FragmentMain extends Fragment{
                         .buildUpon()
                         .appendPath(LIST)
                         .appendQueryParameter(KEY, getResources().getString(R.string.api_key))
+                        .appendQueryParameter(PAGE, pageNumber)
                 .build();
 
                 URL url = new URL(buildUri.toString());

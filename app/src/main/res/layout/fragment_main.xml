@@ -2,24 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context=".MainActivityFragment">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/previous_page"
+        android:id="@+id/previous_movies"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/movie_list"
-        android:textSize="30dp"
+        android:textSize="35dp"
         android:layout_gravity="top"
         android:textAlignment="center"
         android:id="@+id/movie_list"></TextView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next_page"
+        android:layout_gravity="right"
+        android:id="@+id/next_movies"/>
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:verticalSpacing="12dp"
-        android:horizontalSpacing="12dp"
+        android:verticalSpacing="5dp"
+        android:horizontalSpacing="5dp"
         android:id="@+id/grid_view_movies"
         android:columnWidth="150dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
         android:numColumns="auto_fit"
         android:scrollingCache="true"
-        android:paddingTop="35dp"/>
+        android:paddingTop="50dp"/>
 </FrameLayout>

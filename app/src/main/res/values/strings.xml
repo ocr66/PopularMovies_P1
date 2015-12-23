@@ -8,4 +8,6 @@
     <string name="action_popular">Most Popular</string>
     <string name="action_top_rated">Top Rated</string>
     <string name="movie_list">Movie List</string>
+    <string name="previous_page">Previous</string>
+    <string name="next_page">Next</string>
 </resources>

@@ -61,7 +61,10 @@
                 android:text="@string/movie_synopsis"
                 android:textSize="20sp"
                 android:layout_below="@+id/space"
-                android:id="@+id/movie_synopsis"/>
+                android:id="@+id/movie_synopsis"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                />
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
