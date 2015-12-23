@@ -19,13 +19,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="39dp"
-                android:text="Movie Title"
+                android:text="@string/movie_title"
                 android:textSize="30sp"
                 android:id="@+id/movie_title"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/movie_poster"
                 android:layout_toEndOf="@+id/movie_poster"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/movie_release_date"
+                android:text="@string/movie_release_date"
+                android:layout_below="@+id/movie_title"
+                android:textSize="20sp"
+                android:layout_alignRight="@+id/movie_title"
+                android:layout_alignEnd="@+id/movie_title"
+                android:layout_toRightOf="@+id/movie_poster"
+                android:layout_toEndOf="@+id/movie_poster" />
 
             <RatingBar
                 android:layout_width="wrap_content"
@@ -36,18 +48,18 @@
                 android:layout_alignStart="@+id/movie_title"
                 android:id="@+id/movie_rating"
                 android:numStars="5"
-                android:layout_below="@+id/movie_title"/>
+                android:layout_below="@+id/movie_release_date"/>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="20sp"
                 android:layout_below="@+id/movie_poster"
                 android:id="@+id/space"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Synopsis"
-                android:textSize="20dp"
+                android:text="@string/movie_synopsis"
+                android:textSize="20sp"
                 android:layout_below="@+id/space"
                 android:id="@+id/movie_synopsis"/>
         </RelativeLayout>

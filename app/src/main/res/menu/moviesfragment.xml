@@ -4,5 +4,12 @@
     <item android:id="@+id/action_refresh"
         android:title="@string/action_refresh"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_popular"
+        android:title="Most Popular"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_top_rated"
+        android:title="@string/action_top_rated"
+        app:showAsAction="never"/>
+
 
 </menu>

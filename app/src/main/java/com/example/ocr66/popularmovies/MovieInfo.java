@@ -24,12 +24,14 @@ public class MovieInfo extends Activity{
     private String movieNames;
     private String movieImage;
     private String movieSynopsis;
+    private String movieReleaseDate;
     private float movieRating;
     private Intent intent;
     ImageView poster;
     TextView title;
     TextView synopsis;
     RatingBar rating;
+    TextView released;
     String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500";
 
     public MovieInfo(){
@@ -40,12 +42,13 @@ public class MovieInfo extends Activity{
         this.movieImage = movieImage;
     }
 
-    public MovieInfo(Context context, String movieNames, String movieImage, String movieSynopsis, String movieRating){
+    public MovieInfo(Context context, String movieNames, String movieImage, String movieSynopsis, String movieRating, String movieReleaseDate){
         this.context = context;
         this.movieNames = movieNames;
         this.movieImage = movieImage;
         this.movieSynopsis = movieSynopsis;
         this.movieRating = Float.parseFloat(movieRating);
+        this.movieReleaseDate = movieReleaseDate;
     }
 
     @Override
@@ -58,17 +61,20 @@ public class MovieInfo extends Activity{
         title = (TextView)findViewById(R.id.movie_title);
         synopsis = (TextView)findViewById(R.id.movie_synopsis);
         rating = (RatingBar)findViewById(R.id.movie_rating);
+        released = (TextView)findViewById(R.id.movie_release_date);
 
         if (intent != null) {
             movieNames = intent.getStringExtra("Name");
             movieImage = intent.getStringExtra("Poster");
             movieSynopsis = intent.getStringExtra("Synopsis");
             movieRating = Float.parseFloat(intent.getStringExtra("Rating"));
+            movieReleaseDate = intent.getStringExtra("Released");
 
             title.setText(movieNames);
             synopsis.setText(movieSynopsis);
-            rating.setStepSize((float)0.1);
-            rating.setRating(movieRating/2);
+            rating.setStepSize((float) 0.1);
+            rating.setRating(movieRating / 2);
+            released.setText(movieReleaseDate);
 
             Picasso.with(getBaseContext()).load(BASE_IMAGE_URL + movieImage).into(poster);
         }

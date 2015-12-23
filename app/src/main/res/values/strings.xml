@@ -2,4 +2,10 @@
     <string name="app_name">PopularMovies</string>
     <string name="api_key"></string>
     <string name="action_refresh">Refresh</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_release_date">Release Date</string>
+    <string name="movie_synopsis">Synopsis</string>
+    <string name="action_popular">Most Popular</string>
+    <string name="action_top_rated">Top Rated</string>
+    <string name="movie_list">Movie List</string>
 </resources>

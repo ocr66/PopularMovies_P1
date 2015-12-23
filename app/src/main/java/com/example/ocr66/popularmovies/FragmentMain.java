@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -45,9 +46,12 @@ public class FragmentMain extends Fragment{
     private String[] posters;
     private String[] synopsis;
     private String[] rating;
+    private String[] releaseDate;
     public ImageView posterImage;
     private ArrayAdapter<ImageView> adapter;
     private GridView gridView;
+    private String movieToGet = "popular";
+    private TextView list;
 
     public FragmentMain(){
 
@@ -65,11 +69,34 @@ public class FragmentMain extends Fragment{
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if(movieToGet == "popular") {
+            menu.getItem(1).setEnabled(false);
+            menu.getItem(2).setEnabled(true);
+        }else{
+            menu.getItem(1).setEnabled(true);
+            menu.getItem(2).setEnabled(false);
+        }
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             updateMovies();
-            return true;
+            //return true;
+        }else if(id == R.id.action_popular){
+            if(movieToGet == "topRated") {
+                movieToGet = "popular";
+                updateMovies();
+            }
+        }else if(id == R.id.action_top_rated) {
+            if (movieToGet == "popular"){
+                movieToGet = "topRated";
+                updateMovies();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -85,6 +112,7 @@ public class FragmentMain extends Fragment{
 
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         //return super.onCreateView(inflater, container, savedInstanceState);
+        list = (TextView)rootView.findViewById(R.id.movie_list);
 
         gridView = (GridView)rootView.findViewById(R.id.grid_view_movies);
         //gridView.setAdapter(adapter);
@@ -97,6 +125,7 @@ public class FragmentMain extends Fragment{
                 intent.putExtra("Poster", posters[position]);
                 intent.putExtra("Synopsis", synopsis[position]);
                 intent.putExtra("Rating", rating[position]);
+                intent.putExtra("Released", releaseDate[position]);
                 startActivity(intent);
             }
         });
@@ -117,6 +146,11 @@ public class FragmentMain extends Fragment{
     }
 
     private void updateMovies(){
+        if(movieToGet == "popular"){
+            list.setText("Popular");
+        }else{
+            list.setText("Top Rated");
+        }
         FetchMovieInfo fetchMovieInfo = new FetchMovieInfo();
         Log.v(LOG_TAG, "Fetching movies info...");
         fetchMovieInfo.execute();
@@ -147,6 +181,7 @@ public class FragmentMain extends Fragment{
         private String BASE_URL = "https://api.themoviedb.org/3/movie";
         private String POPULAR_MOVIES = "popular";
         private String TOP_RATED = "top_rated";
+        private String LIST = "popular";
         private String LANGUAGE = "language";
         private String KEY = "api_key"; //Do not change this value, key must be defined on strings.xml
         private String RESULTS = "results";
@@ -154,6 +189,7 @@ public class FragmentMain extends Fragment{
         private String MOVIE_IMAGE = "poster_path";
         private String MOVIE_SYNOPSIS = "overview";
         private String MOVIE_RATING = "vote_average";
+        private String MOVIE_RELEASE_DATE = "release_date";
         private Resources res;
 
         private String[] getMovieInfoFromJson(String movieInfoJsonStr) throws JSONException {
@@ -167,14 +203,17 @@ public class FragmentMain extends Fragment{
                 String posterPath;
                 String synopsis;
                 double rating;
+                String released;
 
                 JSONObject movie = moviesArray.getJSONObject(i);
                 name = movie.getString(MOVIE_NAME);
                 posterPath = movie.getString(MOVIE_IMAGE);
                 synopsis = movie.getString(MOVIE_SYNOPSIS);
                 rating = movie.getDouble(MOVIE_RATING);
+                released = movie.getString(MOVIE_RELEASE_DATE);
 
-                resultsStr[i] = name + "--" + posterPath + "--" + synopsis + "--" + rating;
+                resultsStr[i] =
+                        name + "--" + posterPath + "--" + synopsis + "--" + rating + "--" + released;
                 //Si solo quiero la imagen sería
                 //resultsStr[i] = posterPath;
             }
@@ -189,6 +228,11 @@ public class FragmentMain extends Fragment{
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(LOG_TAG, "On Pre-excecute");
+            if(movieToGet == "popular"){
+                LIST = POPULAR_MOVIES;
+            }else{
+                LIST = TOP_RATED;
+            }
         }
 
         @Override
@@ -203,7 +247,7 @@ public class FragmentMain extends Fragment{
             try {
                 Uri buildUri = Uri.parse(BASE_URL)
                         .buildUpon()
-                        .appendPath(POPULAR_MOVIES)
+                        .appendPath(LIST)
                         .appendQueryParameter(KEY, getResources().getString(R.string.api_key))
                 .build();
 
@@ -269,6 +313,7 @@ public class FragmentMain extends Fragment{
                 posters = new String[strings.length];
                 synopsis = new String[strings.length];
                 rating = new String[strings.length];
+                releaseDate = new String[strings.length];
                 //adapter.clear();
 
                 for(int i = 0; i < strings.length; i++){
@@ -277,7 +322,8 @@ public class FragmentMain extends Fragment{
                     posters[i] = temp[1];
                     synopsis[i] = temp[2];
                     rating[i] = temp[3];
-                    temp[0] = temp[1] = temp[2] = temp[3] = null;
+                    releaseDate[i] = temp[4];
+                    temp[0] = temp[1] = temp[2] = temp[3] = temp[4] = null;
                     //adapter.add(names[i]);
                 }
             }
